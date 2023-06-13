@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<tests>
+    <item id="0">
+        <name>dummy</name>
+        <description>A dummy for testing the XML parser</description>
+        <trigger>none</trigger>
+    </item>
+    <item id="1">
+        <name>dummy</name>
+        <description>A dummy for testing the XML parser</description>
+        <trigger>mouseclick</trigger>
+    </item>
+    <item id="2">
+        <name>stuff</name>
+        <description>some valid XML</description>
+    </item>
+    <item id="3">
+        <name>nice_item</name>
+        <description>This is an exceptionally well crafted item, the best our store has to offer.</description>
+        <price>$13.37</price>
+    </item>
+    <item id="4">
+        <name>more stuff</name>
+        <description>some valid XML</description>
+    </item>
+</tests>
+    
+

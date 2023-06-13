@@ -1,0 +1,73 @@
+,executions,exec/s,corpus,objectives,edges,Basic Blocks in UC
+wycinwyc #1 afl,791057,9.2,674,0,,2124
+wycinwyc #2 afl,846567,9.8,675,0,,2117
+wycinwyc #3 afl,851170,9.9,658,0,,2115
+wycinwyc #4 afl,812176,9.4,659,0,,2113
+wycinwyc #5 afl,794103,9.2,661,0,,2146
+,,,,,,
+nxp http #0 afl,390996,4.5,317,0,,2021
+nxp http #1 afl,425455,4.9,315,0,,1904
+nxp http #2 afl,414274,4.8,318,0,,2046
+nxp http #3 afl,408931,4.7,320,0,,2015
+nxp http #4 afl,416977,4.8,339,0,,2026
+,,,,,,
+st-plc #0 afl,1239641,14.3,36,1  hang,,743
+st-plc #1 afl,727968,8.4,35,0,,665
+st-plc #2 afl,796523,9.2,38,0,,665
+st-plc #3 afl,936495,10.8,37,0,,665
+st-plc #4 afl,1256125,14.5,39,1 hang,,658
+,,,,,,
+stm32_tcp_echo_server #0 afl,431001,5,294,0,,1598
+stm32_tcp_echo_server #1 afl,430919,5,288,0,,1538
+stm32_tcp_echo_server #2 afl,440807,5.1,286,0,,1359
+stm32_tcp_echo_server #3 afl,435609,5,282,0,,1598
+stm32_tcp_echo_server #4 afl,455029,5.3,290,0,,1593
+,,,,,,
+,,,,,,
+stm32_tcp_echo_client #0 afl,394944,4.6,283,0,,1733
+stm32_tcp_echo_client #1 afl,423020,4.9,276,,,1698
+stm32_tcp_echo_client #2 afl,413243,4.8,271,,,1702
+stm32_tcp_echo_client #3 afl,412946,4.8,277,,,1685
+stm32_tcp_echo_client #4 afl,418410,4.8,275,,,1702
+,,,,,,
+stm32_udp_echo_server #0 afl,476168,5.5,180,,,1049
+stm32_udp_echo_server #1 afl,513485,5.9,180,,,1001
+stm32_udp_echo_server #2 afl,503558,5.8,181,,,1053
+stm32_udp_echo_server #3 afl,509233,5.9,188,,,1079
+stm32_udp_echo_server #4 afl,507835,5.9,186,,,1073
+,,,,,,
+stm32_udp_echo_client #0 afl,412980,4.8,183,,,1193
+stm32_udp_echo_client #1 afl,429701,5,204,,,1220
+stm32_udp_echo_client #2 afl,433562,5,196,,,1231
+stm32_udp_echo_client #3 afl,431812,5,186,,,1193
+stm32_udp_echo_client #4 afl,429255,5,200,,,1207
+,,,,,,
+p2im_drone #0 afl,965027,11.2,149,,,285
+p2im_drone #1 afl,752175,8.7,186,,,283
+p2im_drone #2 afl,757940,8.8,155,,,283
+p2im_drone #3 afl,799898,9.3,164,,,283
+p2im_drone #4 afl,966081,11.2,155,,,283
+,,,,,,
+6lowpan_tx #0 afl,157849,1.8,130,,,2194
+6lowpan_tx #1 afl,158057,1.8,130,,,2194
+6lowpan_tx #2 afl,157832,1.8,130,,,2194
+6lowpan_tx #3 afl,158086,1.8,130,,,2194
+6lowpan_tx #4 afl,159447,1.8,130,,,2194
+,,,,,,
+6lowpan_rx #1 afl,104309,1.2,426,27 unique hangs,,2334
+6lowpan_rx #1 afl,104275,1.2,426,31 unique hangs,,2334
+6lowpan_rx #1 afl,104270,1.2,426,27 unique hangs,,2334
+6lowpan_rx #1 afl,104272,1.2,426,28 unique hangs,,2334
+6lowpan_rx #1 afl,104272,1.2,426,29 unique hangs,,2333
+,,,,,,
+samr21 http_eth #1 afl,255175,3,163,43 unique hangs,,1588
+samr21 http_eth #1 afl,272258,3.2,174,33 uh,,1605
+samr21 http_eth #1 afl,265059,3.1,172,42 uh,,1587
+samr21 http_eth #1 afl,269042,3.1,168,36 uh,,1600
+samr21 http_eth #1 afl,269127,3.1,173,34 uh,,1591
+,,,,,,
+p2im plc #1 afl,1739574,20.1,189,"656k/82 hangs, 23/2 crashes",,209
+p2im plc #2 afl,1604015,18.6,148,"1.13M/80 hangs, 23/2 crashes",,208
+p2im plc #3 afl,1317218,15.2,162,"773k/76 hangs, 48/2 crashes",,229
+p2im plc #4 afl,1684857,19.5,203,"189l/89 hangs, 4/3 crashes",,250
+p2im plc #5 afl,1838541,21.3,205,"184l/94 hangs, 77/6 crashes",,254

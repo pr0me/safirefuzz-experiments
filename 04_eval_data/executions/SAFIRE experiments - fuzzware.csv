@@ -1,0 +1,72 @@
+Target,,exec/s
+6lowpan_rx #0,,73.6
+6lowpan_rx #1,,46.2
+6lowpan_rx #2,,26.4
+6lowpan_rx #3,,76.8
+6lowpan_rx #4,,74.6
+,,
+6lowpan_tx #0,,59.7
+6lowpan_tx #1,,66.4
+6lowpan_tx #2,,63.0
+6lowpan_tx #3,,74.5
+6lowpan_tx #4,,66.6
+,,
+nxp http #0,,32.3
+nxp http #1,,27.5
+nxp http #2,,22.5
+nxp http #3,,19.1
+nxp http #4,,18.9
+,,
+samr21 http_eth #1,,994.8
+samr21 http_eth #2,,988.2
+samr21 http_eth #3,,1229.7
+samr21 http_eth #4,,1062.1
+samr21 http_eth #5,,1018.4
+,,
+p2im_drone #0,,8.5
+p2im_drone #1,,12.8
+p2im_drone #2,,6.4
+p2im_drone #3,,11.3
+p2im_drone #4,,9.7
+,,
+wycinwyc #0,,41.0
+wycinwyc #1,,31.6
+wycinwyc #2,,31.3
+wycinwyc #3,,42.9
+wycinwyc #4,,43.1
+,,
+p2im plc #1,,26.5
+p2im plc #2,,24.5
+p2im plc #3,,29.2
+p2im plc #4,,18.4
+p2im plc #5,,17.7
+,,
+st-plc #0,,15.9
+st-plc #1,,15.5
+st-plc #2,,15.4
+st-plc #3,,12.1
+st-plc #4,,16.3
+,,
+stm32_tcp_echo_server #0,,83.0
+stm32_tcp_echo_server #1,,80.4
+stm32_tcp_echo_server #2,,92.5
+stm32_tcp_echo_server #3,,88.4
+stm32_tcp_echo_server #4,,94.9
+,,
+stm32_tcp_echo_client #0,,83.3
+stm32_tcp_echo_client #1,,87.2
+stm32_tcp_echo_client #2,,86.9
+stm32_tcp_echo_client #3,,88.1
+stm32_tcp_echo_client #4,,96.8
+,,
+stm32_udp_echo_client #0,,86.7
+stm32_udp_echo_client #1,,90.2
+stm32_udp_echo_client #2,,89.0
+stm32_udp_echo_client #3,,100.7
+stm32_udp_echo_client #4,,93.9
+,,
+stm32_udp_echo_server #0,,81.8
+stm32_udp_echo_server #1,,104.4
+stm32_udp_echo_server #2,,96.8
+stm32_udp_echo_server #3,,85.1
+stm32_udp_echo_server #4,,84.7

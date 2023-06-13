@@ -1,0 +1,66 @@
+commit 4943dc8558e989b352c98b5c616082ba6326209a
+Author: mariusmue <m.muench@vu.nl>
+Date:   Thu Feb 2 10:19:11 2023 +0000
+
+    Add a force_overwrite flag for gentraces
+
+diff --git a/fuzzware_pipeline/__init__.py b/fuzzware_pipeline/__init__.py
+index a9f6fd5..75c3e96 100644
+--- a/fuzzware_pipeline/__init__.py
++++ b/fuzzware_pipeline/__init__.py
+@@ -802,7 +802,7 @@ def do_genstats(args, leftover_args):
+             not_yet_found_milestone_bbs = set(milestone_bbs)
+ 
+         logger.info("Generating missing basic block set traces, if any")
+-        gen_all_missing_traces(projdir, trace_name_prefixes=(nc.PREFIX_BASIC_BLOCK_SET, ), log_progress=True, verbose=args.verbose)
++        gen_all_missing_traces(projdir, trace_name_prefixes=(nc.PREFIX_BASIC_BLOCK_SET, ), log_progress=True, verbose=args.verbose, force_overwrite=args.force_overwrite)
+ 
+         milestone_discovery_timings = {}
+         seen_bbs = set()
+@@ -1020,6 +1020,7 @@ def main():
+     parser_genstats.add_argument('--i-am-aware-i-am-overcounting-translation-blocks-so-force-skip-valid-bb-file', action="store_true", default=False, help="Force coverage collection to skip valid-listing basic blocks (NOTE: this will overcount coverage to translation blocks instead of basic blocks and is bad practice when comparing results with other fuzzers).")
+     parser_genstats.add_argument('--milestone-bb-file', default=None, help=f"A list of basic block addresses which represent some type of milestone for which we are interested in discovery timings. If not specified, will look for a file '{nc.PIPELINE_FILENAME_CHECKPOINT_BBS}'")
+     parser_genstats.add_argument('-v', '--verbose', default=False, action="store_true", help="Prints output of emulator child if set.")
++    parser_genstats.add_argument('-f', '--force-overwrite', default=False, action="store_true", help="Force re-generation of traces, deleting existing ones.")
+ 
+     # Replaytest command-line arguments
+     parser_replaytest.add_argument('project_dir', type=os.path.abspath, help="Directory containing the main config")
+diff --git a/fuzzware_pipeline/workers/tracegen.py b/fuzzware_pipeline/workers/tracegen.py
+index 04c565e..3de9e4d 100644
+--- a/fuzzware_pipeline/workers/tracegen.py
++++ b/fuzzware_pipeline/workers/tracegen.py
+@@ -67,7 +67,7 @@ def batch_gen_native_traces(config_path, input_paths, extra_args=None, bbl_set_p
+ 
+     gentrace_proc.destroy()
+ 
+-def gen_missing_maindir_traces(maindir, required_trace_prefixes, fuzzer_nums=None, tracedir_postfix="", log_progress=False, verbose=False, crashing_inputs=False):
++def gen_missing_maindir_traces(maindir, required_trace_prefixes, fuzzer_nums=None, tracedir_postfix="", log_progress=False, verbose=False, crashing_inputs=False, force_overwrite=False):
+     projdir = nc.project_base(maindir)
+     config_path = nc.config_file_for_main_path(maindir)
+     extra_args = parse_extra_args(load_extra_args(nc.extra_args_for_config_path(config_path)), projdir)
+@@ -87,6 +87,10 @@ def gen_missing_maindir_traces(maindir, required_trace_prefixes, fuzzer_nums=Non
+         # In case we have a custom tracedir postfix, we need to create directories on demand
+         if not tracedir.exists():
+             tracedir.mkdir()
++        elif force_overwrite == True:
++            # Assumption: Only files, no directories, in tracedir
++            for trace in tracedir.iterdir():
++                trace.unlink()
+ 
+         for input_path in nc.input_paths_for_fuzzer_dir(fuzzer_dir, crashes=crashing_inputs):
+             bbl_trace_path, ram_trace_path, mmio_trace_path = None, None, None
+@@ -159,12 +163,12 @@ def gen_missing_maindir_traces(maindir, required_trace_prefixes, fuzzer_nums=Non
+                     time_estimated = round((relative_done ** (-1)) * time_passed)
+                     logger.info(f"[*] Processed {num_processed}/{num_gentrace_jobs} in {time_passed} seconds. Estimated seconds remaining: {time_estimated-time_passed}")
+ 
+-def gen_all_missing_traces(projdir, trace_name_prefixes=None, log_progress=False, verbose=False, crashing_inputs=False):
++def gen_all_missing_traces(projdir, trace_name_prefixes=None, log_progress=False, verbose=False, crashing_inputs=False, force_overwrite=False):
+     if trace_name_prefixes is None:
+         trace_name_prefixes = nc.TRACE_FILENAME_PREFIXES
+ 
+     for maindir in nc.main_dirs_for_proj(projdir):
+-        gen_missing_maindir_traces(maindir, trace_name_prefixes, log_progress=log_progress, verbose=verbose, crashing_inputs=crashing_inputs)
++        gen_missing_maindir_traces(maindir, trace_name_prefixes, log_progress=log_progress, verbose=verbose, crashing_inputs=crashing_inputs, force_overwrite=force_overwrite)
+ 
+ def spawn_forkserver_emu_child(config_path, input_path, extra_args, silent=False):
+     arg_list = gen_run_arglist(config_path, extra_args) + [input_path]

@@ -1,0 +1,82 @@
+diff --git a/harness/fuzzware_harness/harness.py b/harness/fuzzware_harness/harness.py
+index cdf7f9c..3ab5940 100644
+--- a/harness/fuzzware_harness/harness.py
++++ b/harness/fuzzware_harness/harness.py
+@@ -194,7 +194,11 @@ def configure_unicorn(args):
+     if args.bb_trace_file is not None:
+         trace_bbs.register_handler(uc, args.bb_trace_file, None, create_dynamic_filenames=args.dynamic_trace_file_revisions)
+ 
+-    if args.bb_set_file or args.mmio_set_file or args.bb_hash_file:
++    # SAFIREFuzz: BB_Set_Tracing via Python
++    if args.bb_set_file:
++        trace_bbs.register_handler(uc, None, args.bb_set_file, create_dynamic_filenames=args.dynamic_trace_file_revisions)
++
++    if args.mmio_set_file or args.bb_hash_file:
+         native.init_native_tracing(uc, args.bb_set_file, args.bb_hash_file, args.mmio_set_file, mmio_ranges)
+ 
+     if args.bintrace_file is not None:
+diff --git a/harness/fuzzware_harness/tracing/trace_bbs.py b/harness/fuzzware_harness/tracing/trace_bbs.py
+index 8cecbab..d1bcbe6 100644
+--- a/harness/fuzzware_harness/tracing/trace_bbs.py
++++ b/harness/fuzzware_harness/tracing/trace_bbs.py
+@@ -2,6 +2,7 @@ import logging
+ import os
+ 
+ 
++
+ from ..exit import add_exit_hook
+ from ..user_hooks import add_block_hook
+ from .serialization import dump_bbl_set_file, dump_bbl_trace_file
+@@ -9,6 +10,18 @@ from .trace_ids import next_event_id
+ 
+ logger = logging.getLogger("emulator")
+ 
++# SAFIREFUZZ-edit-note:
++# This file has hackish modifications to exclude hooked HAL functions from trace generation
++# Main idea is that entry points into HAL disable trace collection, and exit points will
++# re-enable collection.
++# Entry points are passed via a file given as env variable
++from unicorn.arm_const import UC_ARM_REG_LR
++hal_entry_points = None
++tracing_disabled = False
++tracing_disabled_exit_addr = None
++
++
++
+ outfile = None
+ outfile_bb_set = None
+ auto_revisions = False
+@@ -18,7 +31,17 @@ curr_cycle_len = 0
+ curr_cycle_offset = 0
+ MAX_CYCLE_LEN = 4
+ def collect_bb_set_addr(uc, address, size=None, user_data=None):
+-    bb_addr_set.add((address, ))
++    global tracing_disabled, tracing_disabled_exit_addr
++
++    if hal_entry_points is not None and address in hal_entry_points:
++        tracing_disabled = True
++        tracing_disabled_exit_addr = uc.reg_read(UC_ARM_REG_LR) | 1
++
++    if tracing_disabled is True and address | 1 == tracing_disabled_exit_addr:
++        tracing_disabled = False
++
++    if tracing_disabled is False:
++        bb_addr_set.add((address, ))
+ 
+ def collect_bb_event(uc, address, size=None, user_data=None):
+     global curr_cycle_len
+@@ -100,6 +123,14 @@ def register_handler(uc, trace_file, set_file, create_dynamic_filenames=False):
+ 
+     auto_revisions = create_dynamic_filenames
+ 
++    # SAFIREFUZZ-edit-note: Get and parse trace file
++    if os.getenv("HAL_ENTRY_BB_FILE") != None:
++        with open(os.getenv("HAL_ENTRY_BB_FILE"), 'r') as f:
++            hal_entries = f.readlines()
++        global hal_entry_points
++        hal_entry_points = set([int(h, 16) for h in hal_entries])
++
++
+     if trace_file is not None:
+         add_block_hook(collect_bb_event)
+         outfile = trace_file

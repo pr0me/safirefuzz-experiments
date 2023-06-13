@@ -1,0 +1,9 @@
+[submodule "fuzzing/SAFIREFUZZ"]
+	path = 01_fuzzing/SAFIREFUZZ
+	url = git@github.com:pr0me/SAFIREFUZZ.git
+[submodule "fuzzing/hal-fuzz"]
+	path = 01_fuzzing/hal-fuzz
+	url = git@github.com:ucsb-seclab/hal-fuzz.git
+[submodule "fuzzing/fuzzware/fuzzware"]
+	path = 01_fuzzing/fuzzware/fuzzware
+	url = git@github.com:fuzzware-fuzzer/fuzzware.git
