@@ -27,6 +27,10 @@ As libAFL does not save timestamps when a new interesting input is found (like l
 
 For HALucinator, AFL creates an `./output` directory for the specified target containing the queue, e.g., `hal-fuzz/tests/atmel_6lowpan_udp_rx/output/queue/`.
 
+## Generating your own valid_bb_files
+
+The basic block files in the [valid_bb_files](./valid_bb_files) are generated with ghidra using the included [ghidra_get_bbs.py](./ghidra_get_bbs.py) script. To generate the basic block ground truth, load the ELF file of the firmware of your choice in ghidra, run the auto analysis, and then execute the script via ghidra's script manager.
+
 ## Replaying (SAFIRE, hal-fuzz, libafl)
 Finally, you can use the provided `eval_bbs_halucinator.py` script to automatically replay inputs in HALucinator.  
 The path to the queue is assumed to include a framework identifier, `libafl` or `hal-fuzz`, if none of those is found, SAFIREFUZZ is assumed.
@@ -62,7 +66,7 @@ Fuzzware inputs do not follow the same input formats as our different hal-based 
 Hence, for replaying these inputs (and collecting coverage), a different approach than above is required.
 
 To replay the inputs and generate the statistics, please use the according genstats scripts: `fuzzware_genstats_with_hal.sh` and `fuzzware_genstats_without_hal.sh` . 
-While the first one performs normal replay of the test cases, the second one excludes all coverage in hal functions. The entry points of these functions are provided in the different files in the [halooks](./halhooks) subdirectory.
+While the first one performs normal replay of the test cases, the second one excludes all coverage in hal functions. The entry points of these functions are provided in the different files in the [halhooks](./halhooks) subdirectory.
 
 ```shell
 ./fuzzware_genstats_with_hal.sh
