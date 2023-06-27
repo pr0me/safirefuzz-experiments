@@ -3,10 +3,10 @@ import os
 import subprocess
 import datetime
 
-harness_mapping = {"6lowpan_udp_rx": "atmel_6lowpan_udp_rx/atmel_6lowpan_udp_rx.yml", "6lowpan_udp_tx": "atmel_6lowpan_udp_tx/atmel_6lowpan_udp_tx.yml", "p2im_plc": "p2im_controllino/p2im_controllino.yml", "samr21": "samr21_http/samr21_http_eth.yml", "wycinwyc": "wycinwyc/expat_panda.yml", "p2im_drone": "p2im_drone/p2im_drone.yml", "nxp_http": "nxp_lwip_http/nxp_lwip_http.yml", "stm32_tcp_echo_client": "stm32_tcp_echo_client/stm32_tcp_echo_client.yml", "stm32_tcp_echo_server": "stm32_tcp_echo/stm32_tcp_echo_server.yml", "stm32_udp_echo_client": "stm32_udp_echo_client/stm32_udp_echo_client.yml", "stm32_udp_echo_server": "stm32_udp_echo/stm32_udp_echo_server.yml", "st_plc": "st-plc/st-plc.yml"}
+harness_mapping = {"6lowpan_udp_rx": "atmel_6lowpan_udp_rx/atmel_6lowpan_udp_rx.yml", "6lowpan_udp_tx": "atmel_6lowpan_udp_tx/atmel_6lowpan_udp_tx.yml", "p2im_plc": "p2im_controllino_slave/p2im_controllino_slave.yml", "samr21": "samr21_http/samr21_http_eth.yml", "wycinwyc": "wycinwyc/expat_panda.yml", "p2im_drone": "p2im_drone/p2im_drone.yml", "nxp_http": "nxp_lwip_http/nxp_lwip_http.yml", "stm32_tcp_echo_client": "stm32_tcp_echo_client/stm32_tcp_echo_client.yml", "stm32_tcp_echo_server": "stm32_tcp_echo/stm32_tcp_echo_server.yml", "stm32_udp_echo_client": "stm32_udp_echo_client/stm32_udp_echo_client.yml", "stm32_udp_echo_server": "stm32_udp_echo/stm32_udp_echo_server.yml", "st_plc": "st-plc/st-plc.yml"}
 
 harness_mapping["nxp_lwip_http"] = "nxp_lwip_http/nxp_lwip_http.yml"
-harness_mapping["p2im_controllino_slave"] = "p2im_controllino/p2im_controllino.yml"
+harness_mapping["p2im_controllino_slave"] = "p2im_controllino_slave/p2im_controllino_slave.yml"
 harness_mapping["st-plc"] = "st-plc/st-plc.yml"
 harness_mapping["stm32_tcp_echo"] = "stm32_tcp_echo/stm32_tcp_echo_server.yml"
 harness_mapping["stm32_udp_echo"] = "stm32_udp_echo/stm32_udp_echo_server.yml"
@@ -28,7 +28,7 @@ def process(path, valid_bbs_file):
     sorted = []
     unique_block_addr = set()
 
-    harness = "../01_fuzzing/hal-fuzz/tests/"
+    harness = "/workspaces/hal-fuzz/tests/"
     for k, v in harness_mapping.items():
         #if k in dir.decode().split('/'):
         if k in dir.decode():
@@ -68,13 +68,13 @@ def process(path, valid_bbs_file):
     exceptions = 0
     for t in sorted:
         file = time_to_filename[t]
-        cmd = ["timeout", "-s", "1", "5", "python3", "-m", "hal_fuzz.harness", "-c", harness, dir.decode() + '/' + file]
+        cmd = ["timeout", "-s", "1", "5", "python3", "-m", "hal_fuzz.harness", "-c", harness, file]
         print("[*] Executing Harness: {}".format(cmd))
         try:
-            result = subprocess.run(cmd, stdout=subprocess.PIPE, timeout=5)
+            result = subprocess.run(cmd, cwd=dir, stdout=subprocess.PIPE, timeout=5)
         except subprocess.TimeoutExpired:
             pass
-        with open("./unique_bbs.out", "r") as output:
+        with open(dir.decode() + "/unique_bbs.out", "r") as output:
             try:
                 unique_block_addr |= eval(output.read())
                 unique_block_addr &= valid_bbs
