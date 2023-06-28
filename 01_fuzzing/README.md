@@ -51,8 +51,9 @@ mkvirtualenv -p /usr/bin/python3 halfuzz
 ./setup.sh
 ```
 
-In order start the fuzzing campaign for a specific target, use the provided run scripts:
+In order start the fuzzing campaign for a specific target, use the provided run scripts within an activated python virtual environment:
 ```
+source ~/.virtualenvs/halfuzz/bin/activate
 timeout 24h ./test_p2im_drone.sh
 ```
 
