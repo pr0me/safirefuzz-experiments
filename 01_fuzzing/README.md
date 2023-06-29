@@ -51,9 +51,15 @@ mkvirtualenv -p /usr/bin/python3 halfuzz
 ./setup.sh
 ```
 
-In order start the fuzzing campaign for a specific target, use the provided run scripts within an activated python virtual environment:
+Before running a fuzzing campaign, make sure that the python virtual environment is activated and that _only_ the patches for fuzzing are applied (`halucinator-patch.diff`).
+I.e., in case you ran coverage collection in between, revert those patches before fuzzing:
 ```
 source ~/.virtualenvs/halfuzz/bin/activate
+git apply -R --reject --whitespace=fix ../../02_coverage_collection/hal-fuzz_cov-col_patch.diff
+``` 
+
+In order start the fuzzing campaign for a specific target, use the provided run scripts:
+```
 timeout 24h ./test_p2im_drone.sh
 ```
 
