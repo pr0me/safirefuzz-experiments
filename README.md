@@ -1,4 +1,7 @@
 # SAFIREFUZZ Experiments
+[![DOI](https://zenodo.org/badge/653182569.svg)](https://zenodo.org/badge/latestdoi/653182569)
+
+<br />
 
 This repository contains documentation, scripts and raw data for the artifact evaluation of the USENIX `23 paper 
 "Forming Faster Firmware Fuzzers".
