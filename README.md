@@ -36,7 +36,6 @@ If you wish, you can also adapt our [scripts](02_coverage_collection/replay_scri
 Using coverage collected on your own or our [original data](04_eval_data/coverage/bb_mann_whitney.ipynb), you can then proceed to replicate our results with our [statistics]() and [plotting scripts](04_eval_data/coverage/gen_fig3.ipynb).
 
 
-
 ## Citation
 ```
 @inproceedings{seidel2023ffff,
@@ -46,3 +45,6 @@ Using coverage collected on your own or our [original data](04_eval_data/coverag
   year={2023}
 }
 ```
+
+This artifact passed USENIX '23 Artifact Evaluation.
+You can find the artifact appendix [here](https://download.vusec.net/papers/safirefuzz_sec23.pdf).
